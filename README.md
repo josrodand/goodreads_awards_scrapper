@@ -1,4 +1,4 @@
-# goodreads_awards_scrapper
+# GoodReads Awards Scrapper
 
 Proyecto de Web Scrapping para lectura de datos de libros desde el sitio web www.goodreads.com.
 
