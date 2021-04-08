@@ -1,8 +1,34 @@
 import pandas as pd
-import numpy as np
 import time
 from bs4 import BeautifulSoup
 import requests
+import sys
+import random
+
+
+def get_headers():
+    """
+    Genera un diccionario con los datos del header. Incluye una lista de diferentes user agent de la cual elige uno
+    de manera aleatoria.
+    """
+    uastrings = [
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.72 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10) AppleWebKit/600.1.25 (KHTML, like Gecko) Version/8.0 Safari/600.1.25",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0",
+        "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.111 Safari/537.36",
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/600.1.17 (KHTML, like Gecko) Version/7.1 Safari/537.85.10",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko",
+        "Mozilla/5.0 (Windows NT 6.3; WOW64; rv:33.0) Gecko/20100101 Firefox/33.0",
+        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.104 Safari/537.36",
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.114 Safari/537.36"
+        ]
+    headers = {
+        "User-Agent": random.choice(uastrings), 
+    }
+    
+    return headers
 
 
 def get_categories(year):
@@ -118,7 +144,10 @@ def load_data_category(cat_elem):
     soup_book = BeautifulSoup(book_page.content, 'html.parser')
     
     # autor
-    author_name = soup_book.find(class_ = 'authorName').text
+    try:
+        author_name = soup_book.find(class_ = 'authorName').text
+    except:
+        author_name = soup_book.find(class_ = 'authorName')[0].text
     dict_book['author_name'] = author_name
     
     # book series
@@ -229,3 +258,28 @@ def load_data_category(cat_elem):
     dict_book['num_awards'] = num_awards
     
     return dict_book
+
+
+if __name__ == '__main__':
+    
+    if len(sys.argv) == 1:
+        print("[ERROR] Please give as input at least one year of data")
+    else:
+        year = int(sys.argv[1])
+        namefile = f'csv/goodreads_awards_{sys.argv[1]}.csv'
+        print(f"[INFO] Reading awards data from year {year}...")
+        list_cat = get_categories(year)
+        dict_book_list = []
+        for cat_elem in list_cat:
+            print(f"[INFO]   + category: {cat_elem[0]}")
+            dict_book_result = load_data_category(cat_elem)
+            dict_book_list.append(dict_book_result)
+        
+        if len(dict_book_list) > 0:
+            df_result_year = pd.DataFrame([pd.Series(elem) for elem in dict_book_list])
+            df_result_year['year'] = year
+            print(f'[INFO] savng csv file: {namefile}')
+            df_result_year.to_csv(namefile, index = False)
+        else:
+            print(f'[ERROR] year {year} not found')
+        

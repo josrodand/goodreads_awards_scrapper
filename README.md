@@ -10,38 +10,49 @@ Este proyecto ha sido desarrollado para la asignatura Tipología y ciclo de vida
 
 Proyecto desarrollado de manera individual por **José Luis Rodríguez Andreu**.
 
+## Ejecución de la aplicación
+
+Para ejecutar la aplicación es necesario instalar las siguientes librerías:
+
+```
+pip install pandas
+pip install request
+pip install beautifulsoup4
+```
+
+Ejemplo de ejecución de la aplicación:
+
+```
+python goodReadsScrapper.py 2020
+```
+
 ## Funcionamiento y dataset generado
 
-El objetivo del proyecto es extraer información del sitio web y red social www.goodreads.com de los libros ganadores de los GoodReads Awards del año indicado. El código toma como entrada uno o mas años para los que extrae los datos. 
+La aplicación genera un fichero csv de nombre **goodreads_awards_[year].csv**, donde *year* se corresponde al año indicado a la aplicación. En el caso de que se indique un año erróneo o para el cual no haya datos sobre los premios, la aplicación devuelve un mensaje de error.
+Cada uno de los registros del conjunto de datos se corresponde al ganador de una determinada categoría para el año escogido, donde se recogen las siguientes características:
 
-El dataset generado contiene la siguiente información:
+* **Category**: Categoría en la que el libro ha resultado ganador.
+* **Title**: Título de la obra.
+* **Votes**: Número de votos alcanzados por la obra.
+* **Autor_name**: Nombre del autor.
+* **Book_series**: Serie literaria a la que pertenece el libro, si fuera el caso.
+* **Rating_value**: Valoración media (en una escala de 0 a 5) alcanzada en Goodreads.
+* **Num_ratings**: Número de valoraciones recibidas por la obra.
+* **Num_reviews**: Número de opiniones realizadas por los usuarios para este libro.
+* **List_genres**: Lista de géneros asociados al libro según la plataforma y los usuarios. Se corresponde a una cadena de caracteres donde los géneros están separados por el carácter ``_``.
+* **Book_format**: Formato del libro (tapa dura, audiolibro…).
+* **Num_pages**: Número de páginas.
+* **Publish_date**: Fecha de publicación.
+* **Original_title**: Título de la obra en el idioma original.
+* **Isbn**: ISBN, o código identificativo de la edición.
+* **Edition_language**: Idioma de la edición.
+* **Setting**: Lugar donde transcurre el libro.
+* **Num_awards**: Número de premios que la obra ha recibido.
+* **Year**: Año de los premios.
 
-- **category**: Categoria donde ha ganado el libro
-- **title**: Titulo
-- **votes**: Numero de votos
-- **author_name**: Nombre del autor
-- **book_series**: Saga a la que pertenece el libro
-- **rating_value**: Puntuacion en goodreads
-- **num_ratings**: Numero de valoraciones
-- **num_reviews**: Numero de reviews
-- **list_genres**: Lista de generos asociados al libro
-- **book_format**: Formato del libro
-- **num_pages**: Numero de paginas
-- **publish_date**: Fecha de publicacion
-- **publisher**: Editora de publicacion
-- **original_title**: Titulo original
-- **isbn**: ISBN
-- **edition_language**: Idioma de la edicion
-- **setting**: Lugar donde transcurre el libro
-- **num_awards**: Numero de premios recibidos
+## Descripción del repositorio
 
-## Estado actual
-
-El core principal del proyecto ya se encuentra implementado. Actualmente solo muestra por pantalla los datos de cada categoría encontrada en el año indicado
-
-**TODO**:
-
-- Generación dataset
-- codigo main que tome varios años de entrada
-- Generación fichero csv
-- Incluir gestión de errores adicionales
+* **goodReadsScrapper.py**: Aplicación python de extracción de datos
+* **LICENSE**: Documento de licencia.
+* **csv**: directorio con los ficheros csv generados
+* **pdf**: Directorio del documento pdf con la descripción y resultados de la práctica.
