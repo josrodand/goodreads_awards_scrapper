@@ -1,6 +1,6 @@
 # GoodReads Awards Scrapper
 
-Proyecto de Web Scrapping para lectura de datos de libros desde el sitio web www.goodreads.com.
+Este proyecto tiene como objetivo generar un conjunto de datos que reúne información sobre los **libros ganadores de los premios Goodreads Awards**, del sitio web www.goodreds.com. La aplicación de captura de datos toma como entrada un año determinado, y genera un fichero csv con el ganador de cada categoría para ese año, el cual contiene información sobre el autor, el número de votos o la puntuación del libro en la propia plataforma, además de información del propio libro.
 
 ## Descripción
 
